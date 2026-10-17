@@ -1,0 +1,35 @@
+--- a/aria2-gnu-linux-build.sh	2026-10-17 00:16:48.194228000 +0800
++++ b/aria2-gnu-linux-build.sh	2026-10-17 02:36:45.708726400 +0800
+@@ -19,7 +19,20 @@
+ 
+ ## CONFIG ##
+ ARCH="$(uname -m)"
+-OPENSSL_ARCH="linux-elf"
++#OPENSSL_ARCH="linux-x86_64"
++
++case "$ARCH" in
++    x86_64|amd64)
++        OPENSSL_ARCH="linux-x86_64"
++        ;;
++    aarch64|arm64)
++        OPENSSL_ARCH="linux-aarch64"
++        ;;
++    *)
++        OPENSSL_ARCH="unknown"
++        ;;
++esac
++
+ BUILD_DIR="/tmp"
+ ARIA2_CODE_DIR="$BUILD_DIR/aria2"
+ OUTPUT_DIR="$HOME/output"
+@@ -76,8 +89,8 @@
+ LIBSSH2_BUILD
+ #JEMALLOC_BUILD
+ ARIA2_BUILD
+-#ARIA2_BIN
+-ARIA2_PACKAGE
++ARIA2_BIN
++#ARIA2_PACKAGE
+ #ARIA2_INSTALL
+ CLEANUP_ALL
+ 

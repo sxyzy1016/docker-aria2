@@ -1,0 +1,19 @@
+--- a/snippet/aria2-code	2026-10-17 00:16:11.042915100 +0800
++++ b/snippet/aria2-code	2026-10-17 01:34:13.116341300 +0800
+@@ -30,11 +30,13 @@
+ }
+ 
+ ARIA2_PATCH() {
+-    git apply $SCRIPT_DIR/patch/*.patch
++    git apply $SCRIPT_DIR/patch/0001-*.patch
++    git apply $SCRIPT_DIR/patch/0002-*.patch
++    git apply $SCRIPT_DIR/patch/0003-*.patch
+ }
+ 
+ ARIA2_CODE_GET() {
+-    #ARIA2_RELEASE_CODE
+-    ARIA2_GIT_CODE
++    ARIA2_RELEASE_CODE
++    #ARIA2_GIT_CODE
+     ARIA2_PATCH
+ }

@@ -1,0 +1,25 @@
+FROM debian:latest AS builder
+
+WORKDIR /P3TERX/aria2-builder
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+COPY aria2-gnu-linux-build.patch /P3TERX/aria2-gnu-linux-build.patch
+COPY aria2-code.patch /P3TERX/aria2-code.patch
+COPY dependences.patch /P3TERX/dependencies.patch
+
+RUN apt-get update && apt-get install -y ca-certificates curl git && \
+    cd /P3TERX && git clone https://github.com/P3TERX/Aria2-Pro-Core.git && \
+    rm -rf aria2-builder && \
+    mv Aria2-Pro-Core aria2-builder && \
+    cd /P3TERX/aria2-builder && \
+    patch -p1 < ../aria2-code.patch && \
+    patch -p1 < ../aria2-gnu-linux-build.patch && \
+    patch -p1 < ../dependencies.patch && \
+    cd /P3TERX/aria2-builder && bash aria2-gnu-linux-build.sh
+
+FROM p3terx/aria2-pro:latest
+
+COPY --from=builder /root/output/aria2c /usr/local/bin/aria2c
+
+COPY init-base /etc/init-base
